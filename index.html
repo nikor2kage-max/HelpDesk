@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Сервис & Аутсорсинг | Контакты</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card-bg: #161b22;
+            --border: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-green: #238636;
+            --accent-blue: #1f6beb;
+            --gold: #d29922;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 28px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .cross {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            width: 12px;
+            height: 16px;
+            opacity: 0.85;
+        }
+        .cross-v {
+            position: absolute;
+            left: 5px;
+            top: 0;
+            width: 2px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 1px;
+        }
+        .cross-h {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 12px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 1px;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 76px;
+            height: 76px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 14px;
+            box-shadow: 0 0 25px rgba(31, 107, 235, 0.35);
+        }
+
+        .profile h1 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .profile p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(46, 160, 67, 0.15);
+            color: #3fb950;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #3fb950;
+            border-radius: 50%;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: #fff;
+        }
+
+        .btn-tg {
+            background-color: #229ED9;
+        }
+        .btn-tg:hover { background-color: #1d8ec4; }
+
+        .btn-wa {
+            background-color: #25D366;
+        }
+        .btn-wa:hover { background-color: #20bd5a; }
+
+        .btn-phone {
+            background-color: #21262d;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .btn-phone:hover { background-color: #30363d; }
+
+        .services {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .services h2 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .services-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .pricing {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .price-card {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .price-card .title {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .price-card .amount {
+            font-size: 14px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="cross">
+            <div class="cross-v"></div>
+            <div class="cross-h"></div>
+        </div>
+
+        <div class="profile">
+            <div class="avatar">💻</div>
+            <h1>IT-Специалист / Эникей</h1>
+            <p>Обслуживание ПК, сетей, серверов и видеонаблюдения для бизнеса</p>
+            <div class="status-badge">
+                <span class="status-dot"></span> Отвечаю за 15 минут
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
+                ✈️ Написать в Telegram (@NikoR_1)
+            </a>
+            <a href="https://wa.me/?text=Здравствуйте!%20Нужна%20консультация%20по%20IT-услугам" target="_blank" class="btn btn-wa">
+                💬 Написать в WhatsApp
+            </a>
+            <a href="tel:+70000000000" class="btn btn-phone">
+                📞 Позвонить по телефону
+            </a>
+        </div>
+
+        <div class="pricing">
+            <div class="price-card">
+                <div class="title">Разовый выезд</div>
+                <div class="amount">от 1 500 ₽</div>
+            </div>
+            <div class="price-card">
+                <div class="title">Абонемент</div>
+                <div class="amount">от 5 000 ₽/мес</div>
+            </div>
+        </div>
+
+        <div class="services">
+            <h2>Решаю задачи бизнеса «под ключ»:</h2>
+            <ul class="services-list">
+                <li>✅ Настройка и ремонт ПК / серверов</li>
+                <li>✅ Офисные сети и Wi-Fi (MikroTik, D-Link)</li>
+                <li>✅ Видеонаблюдение с доступом с телефона</li>
+                <li>✅ МФУ, сетевая печать и IP-АТС</li>
+                <li>✅ Официально (Договор + УПД)</li>
+            </ul>
+        </div>
+
+        <div class="footer-note">
+            Гарантия на работы 14 дней • Консультация бесплатно
+        </div>
+    </div>
+
+</body>
+</html>
