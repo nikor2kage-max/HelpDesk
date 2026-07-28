@@ -1,241 +1,274 @@
+from weasyprint import HTML
+
+html_content = """
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT-Инженер и Сисадмин для Бизнеса</title>
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: 90mm 50mm;
+    margin: 0;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #e2e8f0;
-            background-color: #0b1320;
-            line-height: 1.4;
-            font-size: 14px;
-        }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #0d1117;
+    color: #e6edf3;
+    width: 90mm;
+    height: 50mm;
+    overflow: hidden;
+    position: relative;
+    -webkit-print-color-adjust: exact;
+  }
 
-        .mobile-header {
-            background-color: #0d1b2a;
-            padding: 14px 18px;
-            position: relative;
-            border-bottom: 2px solid #d4af37;
-        }
+  /* Decorative tech accent lines */
+  .bg-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3mm;
+    height: 100%;
+    background: linear-gradient(180deg, #238636 0%, #2ea043 50%, #1f6beb 100%);
+  }
 
-        .header-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-            margin: 0;
-        }
+  /* Christian Cross in Top Right Corner */
+  .cross-container {
+    position: absolute;
+    top: 3.5mm;
+    right: 4mm;
+    width: 10px;
+    height: 14px;
+    opacity: 0.85;
+  }
 
-        .header-subtitle {
-            font-size: 11px;
-            color: #d4af37;
-            margin-top: 2px;
-        }
+  /* Precise CSS Cross */
+  .cross-v {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    width: 2px;
+    height: 14px;
+    background-color: #d29922; /* Warm subtle gold */
+    border-radius: 1px;
+  }
 
-        .cross-icon {
-            position: absolute;
-            top: 12px;
-            right: 18px;
-            color: #d4af37;
-            font-size: 18px;
-        }
+  .cross-h {
+    position: absolute;
+    left: 0;
+    top: 3.5px;
+    width: 10px;
+    height: 2px;
+    background-color: #d29922;
+    border-radius: 1px;
+  }
 
-        .container {
-            padding: 14px 16px;
-        }
+  .card-container {
+    padding: 3.5mm 4mm 3.5mm 6.5mm;
+    height: 100%;
+    display: table;
+    width: 100%;
+  }
 
-        /* Персональный блок с вашим портретом */
-        .personal-card {
-            background: linear-gradient(135deg, #132238 0%, #0d1b2a 100%);
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
+  .header-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2mm;
+  }
 
-        .personal-photo {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px solid #d4af37;
-            object-fit: cover;
-            flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-        }
+  .title-cell {
+    vertical-align: top;
+  }
 
-        .personal-info {
-            flex-grow: 1;
-        }
+  .main-title {
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 0;
+  }
 
-        .personal-name {
-            font-size: 15px;
-            font-weight: 800;
-            color: #ffffff;
-        }
+  .subtitle {
+    font-size: 6.2pt;
+    color: #3fb950;
+    font-weight: 600;
+    margin-top: 1px;
+    letter-spacing: 0.2px;
+  }
 
-        .personal-role {
-            font-size: 11px;
-            color: #d4af37;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
+  .services-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2.5mm;
+  }
 
-        .personal-desc {
-            font-size: 11px;
-            color: #94a3b8;
-            line-height: 1.3;
-        }
+  .service-col {
+    width: 50%;
+    vertical-align: top;
+    font-size: 5.5pt;
+    color: #c9d1d9;
+    line-height: 1.35;
+  }
 
-        /* Заголовки разделов */
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 20px 0 12px 0;
-            padding-left: 8px;
-            border-left: 3px solid #d4af37;
-        }
+  .service-item {
+    margin-bottom: 1px;
+    white-space: nowrap;
+  }
 
-        /* Галерея рабочего процесса */
-        .work-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+  .bullet {
+    color: #58a6ff;
+    font-weight: bold;
+  }
 
-        .gallery-card {
-            background: #132238;
-            border: 1px solid #1e3a5f;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+  .trust-bar {
+    background-color: #161b22;
+    border: 0.5pt solid #30363d;
+    border-radius: 3px;
+    padding: 1.5mm 2mm;
+    margin-bottom: 2.5mm;
+  }
 
-        .gallery-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            display: block;
-        }
+  .trust-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-        .gallery-caption {
-            padding: 8px 12px;
-            font-size: 11px;
-            color: #cbd5e1;
-            background: #0d1b2a;
-            border-top: 1px solid #1e3a5f;
-        }
+  .trust-cell {
+    font-size: 5.2pt;
+    color: #8b949e;
+    text-align: center;
+    width: 33.33%;
+  }
 
-        /* Кнопки связи */
-        .cta-box {
-            background: linear-gradient(135deg, #0d1b2a 0%, #070e17 100%);
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 16px 14px;
-            margin-top: 20px;
-            text-align: center;
-        }
+  .trust-cell strong {
+    color: #f0f6fc;
+    font-size: 5.5pt;
+  }
 
-        .cta-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
+  .footer-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-        .cta-subtitle {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 14px;
-        }
+  .price-cell {
+    vertical-align: bottom;
+    width: 48%;
+  }
 
-        .btn-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+  .price-tag {
+    font-size: 5.8pt;
+    color: #e6edf3;
+    line-height: 1.3;
+  }
 
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            text-align: center;
-        }
+  .price-highlight {
+    color: #58a6ff;
+    font-weight: bold;
+  }
 
-        .btn-tg { background: #0088cc; color: #ffffff; }
-        .btn-wa { background: #25D366; color: #ffffff; }
-        .btn-phone { background: #16a34a; color: #ffffff; }
-    </style>
+  .contact-cell {
+    vertical-align: bottom;
+    text-align: right;
+    width: 52%;
+  }
+
+  .tg-handle {
+    font-size: 7.5pt;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #1f6beb;
+    padding: 1.5px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 1px;
+  }
+
+  .contact-sub {
+    font-size: 4.8pt;
+    color: #8b949e;
+    margin-top: 1px;
+  }
+</style>
 </head>
 <body>
 
-    <div class="mobile-header">
-        <div class="cross-icon">†</div>
-        <div class="header-title">IT-ИНЖЕНЕР & СИСАДМИН</div>
-        <div class="header-subtitle">Обслуживание ПК, сетей и серверов</div>
+  <div class="bg-accent"></div>
+
+  <!-- Christian Cross Top Right -->
+  <div class="cross-container" title="Christian Cross">
+    <div class="cross-v"></div>
+    <div class="cross-h"></div>
+  </div>
+
+  <div class="card-container">
+    
+    <!-- Header -->
+    <table class="header-table">
+      <tr>
+        <td class="title-cell">
+          <div class="main-title">IT-АУТСОРСИНГ & СЕРВИС</div>
+          <div class="subtitle">Решение всех IT-задач бизнеса «под ключ»</div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Services Grid (2 Columns) -->
+    <table class="services-table">
+      <tr>
+        <td class="service-col" style="padding-right: 2mm;">
+          <div class="service-item"><span class="bullet">•</span> Настройка/ремонт ПК и серверов</div>
+          <div class="service-item"><span class="bullet">•</span> Офисные сети, Wi-Fi (MikroTik)</div>
+          <div class="service-item"><span class="bullet">•</span> Видеонаблюдение с телефона</div>
+        </td>
+        <td class="service-col">
+          <div class="service-item"><span class="bullet">•</span> МФУ и сетевая печать</div>
+          <div class="service-item"><span class="bullet">•</span> IP-Телефония и АТС</div>
+          <div class="service-item"><span class="bullet">•</span> Абонентское обслуживание</div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Trust / Advantages Bar -->
+    <div class="trust-bar">
+      <table class="trust-table">
+        <tr>
+          <td class="trust-cell"><strong>Договор + УПД</strong><br>Официально</td>
+          <td class="trust-cell" style="border-left: 0.5pt solid #30363d; border-right: 0.5pt solid #30363d;"><strong>Выезд в день заказа</strong><br>Гарантия 14 дней</td>
+          <td class="trust-cell"><strong>Опыт 8 лет</strong><br>15+ серверов</td>
+        </tr>
+      </table>
     </div>
 
-    <div class="container">
+    <!-- Footer Pricing & Contacts -->
+    <table class="footer-table">
+      <tr>
+        <td class="price-cell">
+          <div class="price-tag">Выезд: <span class="price-highlight">от 1 500 ₽</span></div>
+          <div class="price-tag">Абонемент: <span class="price-highlight">от 5 000 ₽/мес</span></div>
+        </td>
+        <td class="contact-cell">
+          <div class="tg-handle">Telegram: @NikoR_1</div>
+          <div class="contact-sub">WhatsApp / Call / MAX • Ответ за 15 мин</div>
+        </td>
+      </tr>
+    </table>
 
-        <!-- 1. ГЛАВНЫЙ ПОРТРЕТ -->
-        <div class="personal-card">
-            <img src="photo/avatar.jpg" alt="Ваш IT-инженер" class="personal-photo">
-            <div class="personal-info">
-                <div class="personal-name">Никита</div>
-                <div class="personal-role">IT-специалист</div>
-                <div class="personal-desc">Лично отвечаю за качество, сохранность данных и стабильность работы вашего офиса.</div>
-            </div>
-        </div>
-
-        <!-- 2. БЛОК РАБОЧЕГО ПРОЦЕССА В ГАЛЕРЕЕ -->
-        <div class="section-title">Рабочий процесс и оснащение</div>
-        
-        <div class="work-gallery">
-            <div class="gallery-card">
-                <img src="work.jpg" alt="Администрирование серверов и сетей">
-                <div class="gallery-caption">🖥️ Настройка серверов, сетевой архитектуры и удаленного доступа.</div>
-            </div>
-
-            <div class="gallery-card">
-                <img src="laptop.jpg" alt="Диагностика и компонентный ремонт">
-                <div class="gallery-caption">🛠️ Срочный ремонт, диагностика и точная настройка оборудования.</div>
-            </div>
-        </div>
-
-        <!-- 3. КНОПКИ СВЯЗИ -->
-        <div class="cta-box">
-            <div class="cta-title">Нужна консультация или выезд?</div>
-            <div class="cta-subtitle">Отвечаю в течение 15 минут</div>
-            
-            <div class="btn-stack">
-                <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
-                    💬 Написать в Telegram
-                </a>
-                <a href="https://wa.me/79000000000" target="_blank" class="btn btn-wa">
-                    💬 Написать в WhatsApp
-                </a>
-                <a href="tel:+79000000000" class="btn btn-phone">
-                    📞 Позвонить
-                </a>
-            </div>
-        </div>
-
-    </div>
+  </div>
 
 </body>
 </html>
+"""
+
+with open("business_card_it.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+HTML("business_card_it.html").write_pdf("business_card_it.pdf")
+print("PDF Business Card generated successfully.")
