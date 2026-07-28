@@ -1,6 +1,24 @@
+import qrcode
 from weasyprint import HTML
 
-html_content = """
+# 1. Create landing page URL (we'll use a placeholder/anchor or Telegram link, and generate a clean QR code)
+landing_url = "https://t.me/NikoR_1"
+
+# Generate QR code image
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_M,
+    box_size=10,
+    border=1,
+)
+qr.add_data(landing_url)
+qr.make(fit=True)
+
+img = qr.make_image(fill_color="#0d1117", back_color="#ffffff")
+img.save("qr_code.png")
+
+# --- GENERATE PDF (2-SIDED BUSINESS CARD) ---
+html_card_2sided = """
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -23,12 +41,17 @@ html_content = """
     color: #e6edf3;
     width: 90mm;
     height: 50mm;
-    overflow: hidden;
-    position: relative;
     -webkit-print-color-adjust: exact;
   }
 
-  /* Decorative tech accent lines */
+  .card-page {
+    width: 90mm;
+    height: 50mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
   .bg-accent {
     position: absolute;
     top: 0;
@@ -48,14 +71,13 @@ html_content = """
     opacity: 0.85;
   }
 
-  /* Precise CSS Cross */
   .cross-v {
     position: absolute;
     left: 4px;
     top: 0;
     width: 2px;
     height: 14px;
-    background-color: #d29922; /* Warm subtle gold */
+    background-color: #d29922;
     border-radius: 1px;
   }
 
@@ -72,18 +94,14 @@ html_content = """
   .card-container {
     padding: 3.5mm 4mm 3.5mm 6.5mm;
     height: 100%;
-    display: table;
     width: 100%;
   }
 
+  /* Front Side Styles */
   .header-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 2mm;
-  }
-
-  .title-cell {
-    vertical-align: top;
   }
 
   .main-title {
@@ -116,11 +134,6 @@ html_content = """
     font-size: 5.5pt;
     color: #c9d1d9;
     line-height: 1.35;
-  }
-
-  .service-item {
-    margin-bottom: 1px;
-    white-space: nowrap;
   }
 
   .bullet {
@@ -188,7 +201,6 @@ html_content = """
     padding: 1.5px 6px;
     border-radius: 2px;
     display: inline-block;
-    margin-bottom: 1px;
   }
 
   .contact-sub {
@@ -196,79 +208,476 @@ html_content = """
     color: #8b949e;
     margin-top: 1px;
   }
+
+  /* Back Side Styles */
+  .back-container {
+    padding: 4mm;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+
+  .back-table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+  }
+
+  .back-left {
+    width: 55%;
+    vertical-align: middle;
+    text-align: left;
+    padding-left: 4mm;
+  }
+
+  .back-right {
+    width: 45%;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .back-headline {
+    font-size: 9.5pt;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 2mm;
+  }
+
+  .back-desc {
+    font-size: 5.8pt;
+    color: #8b949e;
+    line-height: 1.35;
+    margin-bottom: 3mm;
+  }
+
+  .back-cta {
+    font-size: 6pt;
+    font-weight: bold;
+    color: #3fb950;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .qr-box {
+    background-color: #ffffff;
+    padding: 2mm;
+    border-radius: 4mm;
+    display: inline-block;
+    border: 1pt solid #30363d;
+  }
+
+  .qr-box img {
+    width: 26mm;
+    height: 26mm;
+    display: block;
+  }
+
+  .qr-caption {
+    font-size: 5pt;
+    color: #8b949e;
+    margin-top: 1.5mm;
+  }
 </style>
 </head>
 <body>
 
-  <div class="bg-accent"></div>
+  <!-- FRONT SIDE -->
+  <div class="card-page">
+    <div class="bg-accent"></div>
+    <div class="cross-container">
+      <div class="cross-v"></div>
+      <div class="cross-h"></div>
+    </div>
 
-  <!-- Christian Cross Top Right -->
-  <div class="cross-container" title="Christian Cross">
-    <div class="cross-v"></div>
-    <div class="cross-h"></div>
-  </div>
-
-  <div class="card-container">
-    
-    <!-- Header -->
-    <table class="header-table">
-      <tr>
-        <td class="title-cell">
-          <div class="main-title">IT-АУТСОРСИНГ & СЕРВИС</div>
-          <div class="subtitle">Решение всех IT-задач бизнеса «под ключ»</div>
-        </td>
-      </tr>
-    </table>
-
-    <!-- Services Grid (2 Columns) -->
-    <table class="services-table">
-      <tr>
-        <td class="service-col" style="padding-right: 2mm;">
-          <div class="service-item"><span class="bullet">•</span> Настройка/ремонт ПК и серверов</div>
-          <div class="service-item"><span class="bullet">•</span> Офисные сети, Wi-Fi (MikroTik)</div>
-          <div class="service-item"><span class="bullet">•</span> Видеонаблюдение с телефона</div>
-        </td>
-        <td class="service-col">
-          <div class="service-item"><span class="bullet">•</span> МФУ и сетевая печать</div>
-          <div class="service-item"><span class="bullet">•</span> IP-Телефония и АТС</div>
-          <div class="service-item"><span class="bullet">•</span> Абонентское обслуживание</div>
-        </td>
-      </tr>
-    </table>
-
-    <!-- Trust / Advantages Bar -->
-    <div class="trust-bar">
-      <table class="trust-table">
+    <div class="card-container">
+      <table class="header-table">
         <tr>
-          <td class="trust-cell"><strong>Договор + УПД</strong><br>Официально</td>
-          <td class="trust-cell" style="border-left: 0.5pt solid #30363d; border-right: 0.5pt solid #30363d;"><strong>Выезд в день заказа</strong><br>Гарантия 14 дней</td>
-          <td class="trust-cell"><strong>Опыт 8 лет</strong><br>15+ серверов</td>
+          <td>
+            <div class="main-title">IT-АУТСОРСИНГ & СЕРВИС</div>
+            <div class="subtitle">Решение всех IT-задач бизнеса «под ключ»</div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="services-table">
+        <tr>
+          <td class="service-col" style="padding-right: 2mm;">
+            <div class="service-item"><span class="bullet">•</span> Настройка/ремонт ПК и серверов</div>
+            <div class="service-item"><span class="bullet">•</span> Офисные сети, Wi-Fi (MikroTik)</div>
+            <div class="service-item"><span class="bullet">•</span> Видеонаблюдение с телефона</div>
+          </td>
+          <td class="service-col">
+            <div class="service-item"><span class="bullet">•</span> МФУ и сетевая печать</div>
+            <div class="service-item"><span class="bullet">•</span> IP-Телефония и АТС</div>
+            <div class="service-item"><span class="bullet">•</span> Абонентское обслуживание</div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="trust-bar">
+        <table class="trust-table">
+          <tr>
+            <td class="trust-cell"><strong>Договор + УПД</strong><br>Официально</td>
+            <td class="trust-cell" style="border-left: 0.5pt solid #30363d; border-right: 0.5pt solid #30363d;"><strong>Выезд в день заказа</strong><br>Гарантия 14 дней</td>
+            <td class="trust-cell"><strong>Опыт 8 лет</strong><br>15+ серверов</td>
+          </tr>
+        </table>
+      </div>
+
+      <table class="footer-table">
+        <tr>
+          <td class="price-cell">
+            <div class="price-tag">Выезд: <span class="price-highlight">от 1 500 ₽</span></div>
+            <div class="price-tag">Абонемент: <span class="price-highlight">от 5 000 ₽/мес</span></div>
+          </td>
+          <td class="contact-cell">
+            <div class="tg-handle">Telegram: @NikoR_1</div>
+            <div class="contact-sub">WhatsApp / Call / MAX • Ответ за 15 мин</div>
+          </td>
         </tr>
       </table>
     </div>
+  </div>
 
-    <!-- Footer Pricing & Contacts -->
-    <table class="footer-table">
-      <tr>
-        <td class="price-cell">
-          <div class="price-tag">Выезд: <span class="price-highlight">от 1 500 ₽</span></div>
-          <div class="price-tag">Абонемент: <span class="price-highlight">от 5 000 ₽/мес</span></div>
-        </td>
-        <td class="contact-cell">
-          <div class="tg-handle">Telegram: @NikoR_1</div>
-          <div class="contact-sub">WhatsApp / Call / MAX • Ответ за 15 мин</div>
-        </td>
-      </tr>
-    </table>
-
+  <!-- BACK SIDE -->
+  <div class="card-page" style="page-break-after: avoid;">
+    <div class="cross-container">
+      <div class="cross-v"></div>
+      <div class="cross-h"></div>
+    </div>
+    
+    <div class="card-container">
+      <table class="back-table">
+        <tr>
+          <td class="back-left">
+            <div class="back-headline">Быстрый выбор<br>способа связи</div>
+            <div class="back-desc">Отсканируйте QR-код, чтобы открыть онлайн-визитку и связаться в один клик.</div>
+            <div class="back-cta">⚡ Консультация бесплатно</div>
+          </td>
+          <td class="back-right">
+            <div class="qr-box">
+              <img src="qr_code.png" alt="QR Code">
+            </div>
+            <div class="qr-caption">Наведите камеру смартфона</div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
 </body>
 </html>
 """
 
-with open("business_card_it.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
+with open("business_card_2sided.html", "w", encoding="utf-8") as f:
+    f.write(html_card_2sided)
 
-HTML("business_card_it.html").write_pdf("business_card_it.pdf")
-print("PDF Business Card generated successfully.")
+HTML("business_card_2sided.html").write_pdf("business_card_2sided.pdf")
+
+# --- GENERATE SINGLE-FILE LANDING PAGE HTML ---
+landing_html = """<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Сервис & Аутсорсинг | Вызов специалиста</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card-bg: #161b22;
+            --border: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-green: #238636;
+            --accent-green-hover: #2ea043;
+            --accent-blue: #1f6beb;
+            --accent-blue-hover: #388bfd;
+            --gold: #d29922;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .cross {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 12px;
+            height: 16px;
+            opacity: 0.8;
+        }
+        .cross-v {
+            position: absolute;
+            left: 5px;
+            top: 0;
+            width: 2px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 1px;
+        }
+        .cross-h {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 12px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 1px;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 20px rgba(35, 134, 54, 0.3);
+        }
+
+        .profile h1 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .profile p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(46, 160, 67, 0.15);
+            color: #3fb950;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #3fb950;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: #fff;
+        }
+
+        .btn-tg {
+            background-color: #229ED9;
+        }
+        .btn-tg:hover { background-color: #1d8ec4; transform: translateY(-1px); }
+
+        .btn-wa {
+            background-color: #25D366;
+        }
+        .btn-wa:hover { background-color: #20bd5a; transform: translateY(-1px); }
+
+        .btn-phone {
+            background-color: #21262d;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .btn-phone:hover { background-color: #30363d; transform: translateY(-1px); }
+
+        .services {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .services h2 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .services-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .services-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pricing {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .price-card {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .price-card .title {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .price-card .amount {
+            font-size: 14px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cross Accent -->
+        <div class="cross">
+            <div class="cross-v"></div>
+            <div class="cross-h"></div>
+        </div>
+
+        <!-- Profile Header -->
+        <div class="profile">
+            <div class="avatar">💻</div>
+            <h1>IT-Специалист / Эникей</h1>
+            <p>Обслуживание ПК, сетей, серверов и видеонаблюдения для бизнеса</p>
+            <div class="status-badge">
+                <span class="status-dot"></span> Отвечаю за 15 минут
+            </div>
+        </div>
+
+        <!-- Contact Buttons -->
+        <div class="buttons">
+            <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
+                ✈️ Написать в Telegram (@NikoR_1)
+            </a>
+            <a href="https://wa.me/?text=Здравствуйте!%20Нужна%20консультация%20по%20IT-услугам" target="_blank" class="btn btn-wa">
+                💬 Написать в WhatsApp
+            </a>
+            <a href="tel:+70000000000" class="btn btn-phone">
+                📞 Позвонить напрямую
+            </a>
+        </div>
+
+        <!-- Pricing Highlights -->
+        <div class="pricing">
+            <div class="price-card">
+                <div class="title">Разовый выезд</div>
+                <div class="amount">от 1 500 ₽</div>
+            </div>
+            <div class="price-card">
+                <div class="title">Абонемент</div>
+                <div class="amount">от 5 000 ₽/мес</div>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="services">
+            <h2>Ключевые услуги:</h2>
+            <ul class="services-list">
+                <li>✅ Настройка и ремонт ПК / серверов</li>
+                <li>✅ Офисные сети и Wi-Fi (MikroTik, D-Link)</li>
+                <li>✅ Видеонаблюдение с доступом с телефона</li>
+                <li>✅ МФУ, сетевая печать и IP-АТС</li>
+                <li>✅ Официально (Договор + УПД)</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-note">
+            Гарантия на работы 14 дней • Консультация бесплатно
+        </div>
+    </div>
+
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(landing_html)
