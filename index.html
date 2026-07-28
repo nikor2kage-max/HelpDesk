@@ -3,232 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT-Сервис & Аутсорсинг | Контакты</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>IT-Инженер и Сисадмин для Бизнеса</title>
     <style>
-        :root {
-            --bg: #0d1117;
-            --card-bg: #161b22;
-            --border: #30363d;
-            --text-main: #f0f6fc;
-            --text-muted: #8b949e;
-            --accent-green: #238636;
-            --accent-blue: #1f6beb;
-            --gold: #d29922;
-        }
-
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #e2e8f0;
+            background-color: #0b1320;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .mobile-header {
+            background-color: #0d1b2a;
+            padding: 14px 18px;
+            position: relative;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: #d4af37;
+            margin-top: 2px;
+        }
+
+        .cross-icon {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            color: #d4af37;
+            font-size: 18px;
         }
 
         .container {
-            width: 100%;
-            max-width: 400px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 28px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            position: relative;
+            padding: 14px 16px;
         }
 
-        .cross {
-            position: absolute;
-            top: 22px;
-            right: 22px;
-            width: 12px;
-            height: 16px;
-            opacity: 0.85;
-        }
-        .cross-v {
-            position: absolute;
-            left: 5px;
-            top: 0;
-            width: 2px;
-            height: 16px;
-            background: var(--gold);
-            border-radius: 1px;
-        }
-        .cross-h {
-            position: absolute;
-            left: 0;
-            top: 4px;
-            width: 12px;
-            height: 2px;
-            background: var(--gold);
-            border-radius: 1px;
-        }
-
-        .profile {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .avatar {
-            width: 76px;
-            height: 76px;
-            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 14px;
-            box-shadow: 0 0 25px rgba(31, 107, 235, 0.35);
-        }
-
-        .personal-photo {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px solid #d4af37;
-            object-fit: cover;
-            flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-        }
-        
-        .profile h1 {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .profile p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(46, 160, 67, 0.15);
-            color: #3fb950;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 12px;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #3fb950;
-            border-radius: 50%;
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 20px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            color: #fff;
-        }
-
-        .btn-tg {
-            background-color: #229ED9;
-        }
-        .btn-tg:hover { background-color: #1d8ec4; }
-
-        .btn-wa {
-            background-color: #25D366;
-        }
-        .btn-wa:hover { background-color: #20bd5a; }
-
-        .btn-phone {
-            background-color: #21262d;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-        }
-        .btn-phone:hover { background-color: #30363d; }
-
-        .services {
-            background: #0d1117;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .services h2 {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        .services-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .pricing {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .price-card {
-            background: #0d1117;
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .price-card .title {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .price-card .amount {
-            font-size: 14px;
-            font-weight: 700;
-            color: #58a6ff;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
+        /* Персональный блок с вашим портретом */
         .personal-card {
             background: linear-gradient(135deg, #132238 0%, #0d1b2a 100%);
             border: 1px solid #d4af37;
@@ -240,64 +63,178 @@
             gap: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
+
+        .personal-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .personal-info {
+            flex-grow: 1;
+        }
+
+        .personal-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .personal-role {
+            font-size: 11px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .personal-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
+
+        /* Заголовки разделов */
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 20px 0 12px 0;
+            padding-left: 8px;
+            border-left: 3px solid #d4af37;
+        }
+
+        /* Галерея рабочего процесса */
+        .work-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .gallery-card {
+            background: #132238;
+            border: 1px solid #1e3a5f;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #cbd5e1;
+            background: #0d1b2a;
+            border-top: 1px solid #1e3a5f;
+        }
+
+        /* Кнопки связи */
+        .cta-box {
+            background: linear-gradient(135deg, #0d1b2a 0%, #070e17 100%);
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 16px 14px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .cta-subtitle {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 14px;
+        }
+
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-tg { background: #0088cc; color: #ffffff; }
+        .btn-wa { background: #25D366; color: #ffffff; }
+        .btn-phone { background: #16a34a; color: #ffffff; }
     </style>
 </head>
 <body>
 
+    <div class="mobile-header">
+        <div class="cross-icon">†</div>
+        <div class="header-title">IT-ИНЖЕНЕР & СИСАДМИН</div>
+        <div class="header-subtitle">Обслуживание ПК, сетей и серверов</div>
+    </div>
+
     <div class="container">
-        <div class="cross">
-            <div class="cross-v"></div>
-            <div class="cross-h"></div>
-        </div>
 
+        <!-- 1. ГЛАВНЫЙ ПОРТРЕТ -->
         <div class="personal-card">
-            <div class="avatar">
-                <img src="photo/avatar.jpg" alt="Ваш IT-инженер" class="personal-photo">
-            </div>
-            <h1>IT-Специалист</h1>
-            <p>Обслуживание ПК, сетей, серверов и видеонаблюдения для бизнеса</p>
-            <div class="status-badge">
-                <span class="status-dot"></span> Отвечаю за 15 минут
+            <img src="photo/avatar.jpg" alt="Ваш IT-инженер" class="personal-photo">
+            <div class="personal-info">
+                <div class="personal-name">Никита</div>
+                <div class="personal-role">IT-специалист</div>
+                <div class="personal-desc">Лично отвечаю за качество, сохранность данных и стабильность работы вашего офиса.</div>
             </div>
         </div>
 
-        <div class="buttons">
-            <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
-                ✈️ Написать в Telegram (@NikoR_1)
-            </a>
-            <a href="https://wa.me/+79186358066/?text=Здравствуйте!%20Нужна%20консультация%20по%20IT-услугам" target="_blank" class="btn btn-wa">
-                💬 Написать в WhatsApp
-            </a>
-            <a href="tel:+71986358066" class="btn btn-phone">
-                📞 Позвонить по телефону
-            </a>
-        </div>
-
-        <div class="pricing">
-            <div class="price-card">
-                <div class="title">Разовый выезд</div>
-                <div class="amount">от 1 500 ₽</div>
+        <!-- 2. БЛОК РАБОЧЕГО ПРОЦЕССА В ГАЛЕРЕЕ -->
+        <div class="section-title">Рабочий процесс и оснащение</div>
+        
+        <div class="work-gallery">
+            <div class="gallery-card">
+                <img src="work.jpg" alt="Администрирование серверов и сетей">
+                <div class="gallery-caption">🖥️ Настройка серверов, сетевой архитектуры и удаленного доступа.</div>
             </div>
-            <div class="price-card">
-                <div class="title">Абонемент</div>
-                <div class="amount">от 5 000 ₽/мес</div>
+
+            <div class="gallery-card">
+                <img src="laptop.jpg" alt="Диагностика и компонентный ремонт">
+                <div class="gallery-caption">🛠️ Срочный ремонт, диагностика и точная настройка оборудования.</div>
             </div>
         </div>
 
-        <div class="services">
-            <h2>Решаю задачи бизнеса «под ключ»:</h2>
-            <ul class="services-list">
-                <li>✅ Настройка и ремонт ПК / серверов</li>
-                <li>✅ Офисные сети и Wi-Fi (MikroTik, D-Link)</li>
-                <li>✅ Видеонаблюдение с доступом с телефона</li>
-                <li>✅ МФУ, сетевая печать и IP-АТС</li>
-                <li>✅ Официально (Договор + УПД)</li>
-            </ul>
+        <!-- 3. КНОПКИ СВЯЗИ -->
+        <div class="cta-box">
+            <div class="cta-title">Нужна консультация или выезд?</div>
+            <div class="cta-subtitle">Отвечаю в течение 15 минут</div>
+            
+            <div class="btn-stack">
+                <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
+                    💬 Написать в Telegram
+                </a>
+                <a href="https://wa.me/79000000000" target="_blank" class="btn btn-wa">
+                    💬 Написать в WhatsApp
+                </a>
+                <a href="tel:+79000000000" class="btn btn-phone">
+                    📞 Позвонить
+                </a>
+            </div>
         </div>
 
-        <div class="footer-note">
-            Гарантия на работы 14 дней • Консультация бесплатно
-        </div>
     </div>
 
 </body>
