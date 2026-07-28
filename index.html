@@ -1,387 +1,9 @@
-import qrcode
-from weasyprint import HTML
-
-# 1. Create landing page URL (we'll use a placeholder/anchor or Telegram link, and generate a clean QR code)
-landing_url = "https://t.me/NikoR_1"
-
-# Generate QR code image
-qr = qrcode.QRCode(
-    version=1,
-    error_correction=qrcode.constants.ERROR_CORRECT_M,
-    box_size=10,
-    border=1,
-)
-qr.add_data(landing_url)
-qr.make(fit=True)
-
-img = qr.make_image(fill_color="#0d1117", back_color="#ffffff")
-img.save("qr_code.png")
-
-# --- GENERATE PDF (2-SIDED BUSINESS CARD) ---
-html_card_2sided = """
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<style>
-  @page {
-    size: 90mm 50mm;
-    margin: 0;
-  }
-  
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #0d1117;
-    color: #e6edf3;
-    width: 90mm;
-    height: 50mm;
-    -webkit-print-color-adjust: exact;
-  }
-
-  .card-page {
-    width: 90mm;
-    height: 50mm;
-    position: relative;
-    overflow: hidden;
-    page-break-after: always;
-  }
-
-  .bg-accent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3mm;
-    height: 100%;
-    background: linear-gradient(180deg, #238636 0%, #2ea043 50%, #1f6beb 100%);
-  }
-
-  /* Christian Cross in Top Right Corner */
-  .cross-container {
-    position: absolute;
-    top: 3.5mm;
-    right: 4mm;
-    width: 10px;
-    height: 14px;
-    opacity: 0.85;
-  }
-
-  .cross-v {
-    position: absolute;
-    left: 4px;
-    top: 0;
-    width: 2px;
-    height: 14px;
-    background-color: #d29922;
-    border-radius: 1px;
-  }
-
-  .cross-h {
-    position: absolute;
-    left: 0;
-    top: 3.5px;
-    width: 10px;
-    height: 2px;
-    background-color: #d29922;
-    border-radius: 1px;
-  }
-
-  .card-container {
-    padding: 3.5mm 4mm 3.5mm 6.5mm;
-    height: 100%;
-    width: 100%;
-  }
-
-  /* Front Side Styles */
-  .header-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2mm;
-  }
-
-  .main-title {
-    font-size: 10.5pt;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    line-height: 1.1;
-    margin: 0;
-  }
-
-  .subtitle {
-    font-size: 6.2pt;
-    color: #3fb950;
-    font-weight: 600;
-    margin-top: 1px;
-    letter-spacing: 0.2px;
-  }
-
-  .services-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2.5mm;
-  }
-
-  .service-col {
-    width: 50%;
-    vertical-align: top;
-    font-size: 5.5pt;
-    color: #c9d1d9;
-    line-height: 1.35;
-  }
-
-  .bullet {
-    color: #58a6ff;
-    font-weight: bold;
-  }
-
-  .trust-bar {
-    background-color: #161b22;
-    border: 0.5pt solid #30363d;
-    border-radius: 3px;
-    padding: 1.5mm 2mm;
-    margin-bottom: 2.5mm;
-  }
-
-  .trust-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .trust-cell {
-    font-size: 5.2pt;
-    color: #8b949e;
-    text-align: center;
-    width: 33.33%;
-  }
-
-  .trust-cell strong {
-    color: #f0f6fc;
-    font-size: 5.5pt;
-  }
-
-  .footer-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .price-cell {
-    vertical-align: bottom;
-    width: 48%;
-  }
-
-  .price-tag {
-    font-size: 5.8pt;
-    color: #e6edf3;
-    line-height: 1.3;
-  }
-
-  .price-highlight {
-    color: #58a6ff;
-    font-weight: bold;
-  }
-
-  .contact-cell {
-    vertical-align: bottom;
-    text-align: right;
-    width: 52%;
-  }
-
-  .tg-handle {
-    font-size: 7.5pt;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #1f6beb;
-    padding: 1.5px 6px;
-    border-radius: 2px;
-    display: inline-block;
-  }
-
-  .contact-sub {
-    font-size: 4.8pt;
-    color: #8b949e;
-    margin-top: 1px;
-  }
-
-  /* Back Side Styles */
-  .back-container {
-    padding: 4mm;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-  }
-
-  .back-table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
-  }
-
-  .back-left {
-    width: 55%;
-    vertical-align: middle;
-    text-align: left;
-    padding-left: 4mm;
-  }
-
-  .back-right {
-    width: 45%;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  .back-headline {
-    font-size: 9.5pt;
-    font-weight: bold;
-    color: #ffffff;
-    line-height: 1.25;
-    margin-bottom: 2mm;
-  }
-
-  .back-desc {
-    font-size: 5.8pt;
-    color: #8b949e;
-    line-height: 1.35;
-    margin-bottom: 3mm;
-  }
-
-  .back-cta {
-    font-size: 6pt;
-    font-weight: bold;
-    color: #3fb950;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-
-  .qr-box {
-    background-color: #ffffff;
-    padding: 2mm;
-    border-radius: 4mm;
-    display: inline-block;
-    border: 1pt solid #30363d;
-  }
-
-  .qr-box img {
-    width: 26mm;
-    height: 26mm;
-    display: block;
-  }
-
-  .qr-caption {
-    font-size: 5pt;
-    color: #8b949e;
-    margin-top: 1.5mm;
-  }
-</style>
-</head>
-<body>
-
-  <!-- FRONT SIDE -->
-  <div class="card-page">
-    <div class="bg-accent"></div>
-    <div class="cross-container">
-      <div class="cross-v"></div>
-      <div class="cross-h"></div>
-    </div>
-
-    <div class="card-container">
-      <table class="header-table">
-        <tr>
-          <td>
-            <div class="main-title">IT-АУТСОРСИНГ & СЕРВИС</div>
-            <div class="subtitle">Решение всех IT-задач бизнеса «под ключ»</div>
-          </td>
-        </tr>
-      </table>
-
-      <table class="services-table">
-        <tr>
-          <td class="service-col" style="padding-right: 2mm;">
-            <div class="service-item"><span class="bullet">•</span> Настройка/ремонт ПК и серверов</div>
-            <div class="service-item"><span class="bullet">•</span> Офисные сети, Wi-Fi (MikroTik)</div>
-            <div class="service-item"><span class="bullet">•</span> Видеонаблюдение с телефона</div>
-          </td>
-          <td class="service-col">
-            <div class="service-item"><span class="bullet">•</span> МФУ и сетевая печать</div>
-            <div class="service-item"><span class="bullet">•</span> IP-Телефония и АТС</div>
-            <div class="service-item"><span class="bullet">•</span> Абонентское обслуживание</div>
-          </td>
-        </tr>
-      </table>
-
-      <div class="trust-bar">
-        <table class="trust-table">
-          <tr>
-            <td class="trust-cell"><strong>Договор + УПД</strong><br>Официально</td>
-            <td class="trust-cell" style="border-left: 0.5pt solid #30363d; border-right: 0.5pt solid #30363d;"><strong>Выезд в день заказа</strong><br>Гарантия 14 дней</td>
-            <td class="trust-cell"><strong>Опыт 8 лет</strong><br>15+ серверов</td>
-          </tr>
-        </table>
-      </div>
-
-      <table class="footer-table">
-        <tr>
-          <td class="price-cell">
-            <div class="price-tag">Выезд: <span class="price-highlight">от 1 500 ₽</span></div>
-            <div class="price-tag">Абонемент: <span class="price-highlight">от 5 000 ₽/мес</span></div>
-          </td>
-          <td class="contact-cell">
-            <div class="tg-handle">Telegram: @NikoR_1</div>
-            <div class="contact-sub">WhatsApp / Call / MAX • Ответ за 15 мин</div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- BACK SIDE -->
-  <div class="card-page" style="page-break-after: avoid;">
-    <div class="cross-container">
-      <div class="cross-v"></div>
-      <div class="cross-h"></div>
-    </div>
-    
-    <div class="card-container">
-      <table class="back-table">
-        <tr>
-          <td class="back-left">
-            <div class="back-headline">Быстрый выбор<br>способа связи</div>
-            <div class="back-desc">Отсканируйте QR-код, чтобы открыть онлайн-визитку и связаться в один клик.</div>
-            <div class="back-cta">⚡ Консультация бесплатно</div>
-          </td>
-          <td class="back-right">
-            <div class="qr-box">
-              <img src="qr_code.png" alt="QR Code">
-            </div>
-            <div class="qr-caption">Наведите камеру смартфона</div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-</body>
-</html>
-"""
-
-with open("business_card_2sided.html", "w", encoding="utf-8") as f:
-    f.write(html_card_2sided)
-
-HTML("business_card_2sided.html").write_pdf("business_card_2sided.pdf")
-
-# --- GENERATE SINGLE-FILE LANDING PAGE HTML ---
-landing_html = """<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT-Сервис & Аутсорсинг | Вызов специалиста</title>
+    <title>IT-Сервис & Аутсорсинг | Контакты</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -393,9 +15,7 @@ landing_html = """<!DOCTYPE html>
             --text-main: #f0f6fc;
             --text-muted: #8b949e;
             --accent-green: #238636;
-            --accent-green-hover: #2ea043;
             --accent-blue: #1f6beb;
-            --accent-blue-hover: #388bfd;
             --gold: #d29922;
         }
 
@@ -418,22 +38,22 @@ landing_html = """<!DOCTYPE html>
 
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 28px 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             position: relative;
         }
 
         .cross {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 22px;
+            right: 22px;
             width: 12px;
             height: 16px;
-            opacity: 0.8;
+            opacity: 0.85;
         }
         .cross-v {
             position: absolute;
@@ -460,16 +80,16 @@ landing_html = """<!DOCTYPE html>
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 76px;
+            height: 76px;
             background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
-            margin: 0 auto 16px;
-            box-shadow: 0 0 20px rgba(35, 134, 54, 0.3);
+            margin: 0 auto 14px;
+            box-shadow: 0 0 25px rgba(31, 107, 235, 0.35);
         }
 
         .profile h1 {
@@ -483,7 +103,13 @@ landing_html = """<!DOCTYPE html>
             color: var(--text-muted);
             line-height: 1.4;
         }
-
+		.profile-avatar {
+    width: 68px;          /* Ширина круга */
+    height: 68px;         /* Высота круга (должна быть равна ширине) */
+    border-radius: 50%;    /* Делает элемент круглым */
+    object-fit: cover;     /* Умная обрезка: фото не сжимается и не растягивается */
+    object-position: center; /* Центрирует лицо на фото при обрезке */
+  }
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -494,20 +120,13 @@ landing_html = """<!DOCTYPE html>
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         .status-dot {
             width: 8px;
             height: 8px;
             background: #3fb950;
             border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
         }
 
         .buttons {
@@ -523,7 +142,7 @@ landing_html = """<!DOCTYPE html>
             justify-content: center;
             gap: 10px;
             padding: 14px 20px;
-            border-radius: 12px;
+            border-radius: 14px;
             text-decoration: none;
             font-size: 15px;
             font-weight: 600;
@@ -531,33 +150,40 @@ landing_html = """<!DOCTYPE html>
             color: #fff;
         }
 
-        .btn-tg {
+        .btn-max {
+			background: #1E61ED; /* Фирменный синий цвет Max */
+			color: #ffffff;
+		}
+		.btn-max:hover {
+			background: #0052cc;
+		}
+		.btn-tg {
             background-color: #229ED9;
         }
-        .btn-tg:hover { background-color: #1d8ec4; transform: translateY(-1px); }
+        .btn-tg:hover { background-color: #1d8ec4; }
 
         .btn-wa {
             background-color: #25D366;
         }
-        .btn-wa:hover { background-color: #20bd5a; transform: translateY(-1px); }
+        .btn-wa:hover { background-color: #20bd5a; }
 
         .btn-phone {
             background-color: #21262d;
             border: 1px solid var(--border);
             color: var(--text-main);
         }
-        .btn-phone:hover { background-color: #30363d; transform: translateY(-1px); }
+        .btn-phone:hover { background-color: #30363d; }
 
         .services {
             background: #0d1117;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 16px;
             margin-bottom: 20px;
         }
 
         .services h2 {
-            font-size: 13px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-muted);
@@ -572,12 +198,6 @@ landing_html = """<!DOCTYPE html>
             font-size: 13px;
         }
 
-        .services-list li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .pricing {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -589,7 +209,7 @@ landing_html = """<!DOCTYPE html>
             background: #0d1117;
             border: 1px solid var(--border);
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
         }
 
@@ -616,15 +236,15 @@ landing_html = """<!DOCTYPE html>
 <body>
 
     <div class="container">
-        <!-- Cross Accent -->
         <div class="cross">
             <div class="cross-v"></div>
             <div class="cross-h"></div>
         </div>
 
-        <!-- Profile Header -->
         <div class="profile">
-            <div class="avatar">💻</div>
+            <div class="avatar">
+				<img src="photo/avatar.jpg" class="profile-avatar">
+			</div>
             <h1>IT-Специалист / Эникей</h1>
             <p>Обслуживание ПК, сетей, серверов и видеонаблюдения для бизнеса</p>
             <div class="status-badge">
@@ -632,20 +252,21 @@ landing_html = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- Contact Buttons -->
         <div class="buttons">
+			<a href="https://max.ru/your_profile" target="_blank" class="btn btn-max">
+				⚡ Написать в Max
+			</a>
             <a href="https://t.me/NikoR_1" target="_blank" class="btn btn-tg">
                 ✈️ Написать в Telegram (@NikoR_1)
             </a>
-            <a href="https://wa.me/?text=Здравствуйте!%20Нужна%20консультация%20по%20IT-услугам" target="_blank" class="btn btn-wa">
+            <a href="https://wa.me/+79186358066/?text=Здравствуйте!%20Нужна%20консультация%20по%20IT-услугам" target="_blank" class="btn btn-wa">
                 💬 Написать в WhatsApp
             </a>
-            <a href="tel:+70000000000" class="btn btn-phone">
-                📞 Позвонить напрямую
+            <a href="tel:+79186358066" class="btn btn-phone">
+                📞 Позвонить по телефону
             </a>
         </div>
 
-        <!-- Pricing Highlights -->
         <div class="pricing">
             <div class="price-card">
                 <div class="title">Разовый выезд</div>
@@ -657,9 +278,8 @@ landing_html = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- Services -->
         <div class="services">
-            <h2>Ключевые услуги:</h2>
+            <h2>Решаю задачи бизнеса «под ключ»:</h2>
             <ul class="services-list">
                 <li>✅ Настройка и ремонт ПК / серверов</li>
                 <li>✅ Офисные сети и Wi-Fi (MikroTik, D-Link)</li>
@@ -669,7 +289,6 @@ landing_html = """<!DOCTYPE html>
             </ul>
         </div>
 
-        <!-- Footer -->
         <div class="footer-note">
             Гарантия на работы 14 дней • Консультация бесплатно
         </div>
@@ -677,7 +296,3 @@ landing_html = """<!DOCTYPE html>
 
 </body>
 </html>
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(landing_html)
