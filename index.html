@@ -231,7 +231,7 @@
             line-height: 1.4;
         }
 
-		        /* Кнопки связи (CTA) */
+        /* Кнопки связи (CTA) */
         .cta-box {
             background: linear-gradient(135deg, #0d1b2a 0%, #070e17 100%);
             border: 1px solid #d4af37;
@@ -273,6 +273,48 @@
             text-decoration: none;
             color: #ffffff;
         }
+
+/* Базовый класс кнопки */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #ffffff;
+    transition: filter 0.2s ease, transform 0.1s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Сочные градиенты сервисов */
+.btn-tg {
+    background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%);
+}
+
+.btn-wa {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+}
+
+.btn-max {
+    background: linear-gradient(135deg, #2A6CFF 0%, #004BD6 100%);
+}
+
+.btn-email {
+    background: linear-gradient(135deg, #4B5563 0%, #1F2937 100%);
+}
+
+.btn-call {
+    background: linear-gradient(135deg, #22C55E 0%, #15803D 100%);
+}
     </style>
 </head>
 <body>
